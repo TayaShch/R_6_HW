@@ -1,0 +1,79 @@
+---
+title: "Home_task_6"
+author: "Щеглова Таисья Игоревна"
+date: "2024-04-17"
+output: html_document
+---
+
+```{r}
+# Общие условия
+
+alpha <- 0.05 # Уровень значимости
+
+beta <- 0.2 # Значение beta
+
+dropout_rate <- 0.1 # Drop-out rate
+
+# z_alpha/2 
+z_alpha_2 <- abs(qnorm(1 - alpha/2))
+# z_beta 
+z_beta <- abs(qnorm(beta))
+
+z_alpha_2
+z_beta
+```
+
+## Задание 1
+
+```{r}
+sd <- 0.20 # Дисперсия
+e <- 0.1 # Разница средних
+delta <- 0.25 # Клинически значимая разница
+
+nominator <- (z_alpha_2 + z_beta)^2 * sd^2 # Выборка
+denominator <- 2 * (delta - abs(e))^2
+sample_size <- nominator / denominator
+
+sample_size_with_dropout <- sample_size / (1 - dropout_rate) # drop-out rate
+sample_size_for_one_group <- ceiling(sample_size_with_dropout)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
+
+## Задание 2
+
+```{r}
+delta <- -0.1 # Клинически значимая разница
+p1 <- 0.85# Доля ответов для препаратов
+p2 <- 0.65
+
+nominator <- (z_alpha_2 + z_beta)^2 * (p1 * (1 - p1) + p2 *(1 - p2)) # Выборка
+denominator <- (p1 - p2 - delta)^2
+sample_size <- nominator / denominator
+
+sample_size_with_dropout <- sample_size / (1 - dropout_rate) # drop-out rate
+sample_size_for_one_group <- ceiling(sample_size_with_dropout)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
+
+## Задание 3
+
+```{r}
+HR <- 2 # Отношение рисков
+d <- 0.8 # Процент пациентов d
+p1 <- 0.5 # Соотношение групп
+p2 <- 0.5
+
+nominator <- (z_alpha_2 + z_beta)^2 # Выборка 
+denominator <- (log(HR))^2 * p1 * p2 * d
+sample_size <- nominator / denominator
+
+sample_size_with_dropout <- sample_size / (1 - dropout_rate) #drop-out rate
+sample_size_for_one_group <- ceiling(sample_size_with_dropout)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
